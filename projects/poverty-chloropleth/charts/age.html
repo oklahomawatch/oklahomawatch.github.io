@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<style>
+html, body {
+padding:0px;
+margin:0px;
+}
+</style>
+
+  <meta charset="utf-8" />
+  <title>Poverty rate in Oklahoma by age</title>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([            
+['Year', '65 and older', '18 and younger'],
+['1969', 38.5, 19.7],
+['1979', 21, 15.7],
+['1989', 17.9, 21.4],
+['1999', 11.1, 19.1],
+['2012', 9.9, 24.1]            
+        ]);
+
+        var options = {
+          colors: ['#74a9cf', '#045a8d' ],
+          chartArea: {left:50, top:0},
+          vAxis: {title: 'Percentage', maxValue:50},
+          chartArea: { }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        
+        function resizeHandler () {
+        chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+        
+      }
+    </script>
+</head>
+<body>
+  <div id="chart_div" style="width: 750px; height: 300px;"></div>
+</body>
+</html>
