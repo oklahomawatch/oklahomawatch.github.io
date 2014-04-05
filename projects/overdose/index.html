@@ -128,7 +128,10 @@ var col = '';
 				mouseout: resetHighlight,
 				click: zoomToFeature
 			});
-            layer.bindPopup('<div style="font-weight:bold; text-transform:uppercase; text-align:center; margin-bottom:-5px;">' + feature.properties.NAME + ' County</div><br/>' + feature.properties.rate + ' overdose deaths per 1,000 people')
+            var def;
+            if (feature.properties.deaths == 1) {def = "death"} else {def = "deaths"}
+            
+            layer.bindPopup('<div style="text-align:center;"><span style="font-weight:bold; text-transform:uppercase;">' + feature.properties.NAME + ' County</span><br/><hr/>' + feature.properties.deaths + ' overdose ' + def + ' in 2012<br/>(' + feature.properties.rate + ' per 1,000 people)</div>')
 		}
 
 		geojson = L.geoJson(deaths, {
