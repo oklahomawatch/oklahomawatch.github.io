@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<title>Fatal overdoses in Oklahoma</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="css/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+<![endif]-->
+ 
+<style>
+ 
+html, body {
+height:100%;
+width:100%;
+font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+padding: 0;
+margin: 0;
+cursor:pointer;
+cursor:hand;
+}
+
+#map {
+    height: 100%;
+    width:100%;
+    }
+
+.info {
+padding: 6px 8px;
+font: 14px/16px Arial, Helvetica, sans-serif;
+background: #fff;
+box-shadow: 0 0 15px rgba(0,0,0,0.2);
+border-radius: 5px;
+		}
+
+		.info h3 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 10px;
+			opacity: 1.0;
+		}
+
+</style>
+
+</head>
+<body>
+
+<div id="map"></div>
+    
+<script src="js/leaflet.js"></script>
+<script src="js/od.js"></script>
+  
+<script>
+
+var map = L.map('map').setView([35.62604706595698, -98.2012939453125], 7);
+
+L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+}).addTo(map);
+        
+var col = '';
+
+		function getColor(d) {
+			if (d <= 0.20) {col = '#fee5d9'}
+            else if (d > 0.21 && d <= 0.40) {col = '#fcae91'}
+            else if (d > 0.41 && d <= 0.60) {col = '#fb6a4a'}
+            else if (d > 0.61 && d <= 0.80) {col = '#de2d26'}
+            else if (d > 0.81) {col = '#a50f15'}
+            return col;
+		}
+        
+		function style(feature) {
+			return {
+				weight: 1,
+				opacity: 1,
+				color: '#fff',
+				fillOpacity: 1.0,
+				fillColor: getColor(feature.properties.rate)
+			};
+		}
+
+		function highlightFeature(e) {
+			var layer = e.target;
+			layer.setStyle({
+				weight: 5,
+				color: '#fff',
+				fillOpacity: 1.0
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+            
+    layer.openPopup();
+            
+		}
+
+		var geojson;
+
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+            e.target.closePopup();
+		}
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
+            layer.bindPopup('<div style="font-weight:bold; text-transform:uppercase; text-align:center; margin-bottom:-5px;">' + feature.properties.NAME + ' County</div><br/>' + feature.properties.rate + ' overdose deaths per 1,000 people')
+		}
+
+		geojson = L.geoJson(deaths, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+
+		var legend = L.control({position: 'bottomright'});
+
+		legend.onAdd = function (map) {
+			var div = L.DomUtil.create('div', 'info legend');
+            var labels = '<i style="background:#fee5d9"></i> &lt;0.20 deaths/1K<br/><i style="background:#fcae91"></i> 0.21-0.40 deaths/1K<br/><i style="background:#fb6a4a"></i> 0.41-0.60 deaths/1K<br/><i style="background:#de2d26"></i> 0.61-0.80 deaths/1K<br/><i style="background:#a50f15"></i> 0.81+ deaths/1K<br/><br/><small>Source: <a href="http://www.ok.gov/ocme/" target="_blank">Chief Medical Examiner</a>'
+			div.innerHTML = labels;
+			return div;
+		};
+
+		legend.addTo(map);
+
+                </script>	
+	</body>
+</html>
