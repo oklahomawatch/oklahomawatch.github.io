@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<style>
+html, body {
+padding:0px;
+margin:0px;
+}
+
+</style>
+
+  <meta charset="utf-8" />
+  <title>Pie</title>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Type', 'Checks'],
+          ['Prescribers', 1522414],
+          ['Pharmacies', 361695],
+          ['Enforcers and regulators', 31774]
+        ]);
+
+        var options = {
+          colors: ['#084594', '#6baed6', '#c6dbef'],
+          legend: 'none',
+          chartArea: {width:"100%", left:0},
+          tooltip: {text: 'value'}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+       
+       var formatter = new google.visualization.NumberFormat(
+      {suffix: ' checks', fractionDigits:0});
+      formatter.format(data, 1);
+       
+        chart.draw(data, options);
+
+                function resizeHandler () {
+        chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+        
+      }
+        
+    </script>
+
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 100%; height: 300px;"></div>
+    </body>
+</html>
