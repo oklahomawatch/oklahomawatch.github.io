@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<style>
+html, body {
+padding:0px;
+margin:0px;
+}
+
+</style>
+
+  <meta charset="utf-8" />
+  <title>Pie</title>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Type', 'Checks'],
+        ['Medical doctors', 7277],
+        ['Osteopaths', 2228],
+        ['Dentists', 1866],
+        ['Veterinarians', 1286],
+        ['Physician assistants', 1270],
+        ['Advanced practice nurses', 1194],
+        ['Opthamologists', 509],
+        ['Podiatrists', 108],
+        ['Medical dentists', 90]
+        ]);
+
+        var options = {
+          colors: ['#7f2704', '#a63603', '#d94801', '#f16913', '#fd8d3c', '#fdae6b', '#fdd0a2', '#fee6ce', '#fff5eb'],
+          legend: 'none',
+          chartArea: {width:"100%", left:0},
+          tooltip: {text: 'value'}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+       
+       var formatter = new google.visualization.NumberFormat(
+      {suffix: ' checks', fractionDigits:0});
+      formatter.format(data, 1);
+       
+        chart.draw(data, options);
+
+                function resizeHandler () {
+        chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+        
+      }
+        
+    </script>
+
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 100%; height: 300px;"></div>
+    </body>
+</html>
