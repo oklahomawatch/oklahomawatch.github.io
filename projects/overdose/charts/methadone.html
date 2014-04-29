@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<style>
+html, body {
+padding:0px;
+margin:0px;
+}
+
+.tip { padding:8px; font-size: 1.2em}
+
+</style>
+
+  <meta charset="utf-8" />
+  <title>Methadone prescriptions in Oklahoma</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+ 
+      var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Quarter');
+        data.addColumn('number', 'Methadone');
+        data.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+        data.addColumn('number', 'kill');
+        data.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
+        data.addRows([
+[1, 1800128, '<div class="tip"><strong>2008 Q1:</strong> 1,800,128 units</div>', 0, ''],
+[2, 1709470, '<div class="tip"><strong>2008 Q2:</strong> 1,709,470 units</div>', 0, ''],
+[3, 1616462, '<div class="tip"><strong>2008 Q3:</strong> 1,616,462 units</div>', 0, ''],
+[4, 1821229, '<div class="tip"><strong>2008 Q4:</strong> 1,821,229 units</div>', 0, ''],
+[5, 2016454, '<div class="tip"><strong>2009 Q1:</strong> 2,016,454 units</div>', 0, ''],
+[6, 2041090, '<div class="tip"><strong>2009 Q2:</strong> 2,041,090 units</div>', 0, ''],
+[7, 1977310, '<div class="tip"><strong>2009 Q3:</strong> 1,977,310 units</div>', 0, ''],
+[8, 2158105, '<div class="tip"><strong>2009 Q4:</strong> 2,158,105 units</div>', 0, ''],
+[9, 1855404, '<div class="tip"><strong>2010 Q1:</strong> 1,855,404 units</div>', 0, ''],
+[10, 2076943, '<div class="tip"><strong>2010 Q2:</strong> 2,076,943 units</div>', 0, ''],
+[11, 1807591, '<div class="tip"><strong>2010 Q3:</strong> 1,807,591 units</div>', 0, ''],
+[12, 1805058, '<div class="tip"><strong>2010 Q4:</strong> 1,805,058 units</div>', 2400000, '<div class="tip">November 2010: Mandatory check of PMP for methadone prescriptions takes effect.</div>'],
+[13, 1752302, '<div class="tip"><strong>2011 Q1:</strong> 1,752,302 units</div>', 0, ''],
+[14, 1800636, '<div class="tip"><strong>2011 Q2:</strong> 1,800,636 units</div>', 0, ''],
+[15, 1858740, '<div class="tip"><strong>2011 Q3:</strong> 1,858,740 units</div>', 0, ''],
+[16, 1822179, '<div class="tip"><strong>2011 Q4:</strong> 1,822,179 units</div>', 0, ''],
+[17, 1831869, '<div class="tip"><strong>2012 Q1:</strong> 1,831,869 units</div>', 0, ''],
+[18, 1734819, '<div class="tip"><strong>2012 Q2:</strong> 1,734,819 units</div>', 0, ''],
+[19, 1667757, '<div class="tip"><strong>2012 Q3:</strong> 1,667,757 units</div>', 0, ''],
+[20, 1686828, '<div class="tip"><strong>2012 Q4:</strong> 1,686,828 units</div>', 0, ''],
+[21, 1648415, '<div class="tip"><strong>2013 Q1:</strong> 1,648,415 units</div>', 0, ''],
+[22, 1726536, '<div class="tip"><strong>2013 Q2:</strong> 1,726,536 units</div>', 0, ''],
+[23, 1700915, '<div class="tip"><strong>2013 Q3:</strong> 1,700,915 units</div>', 0, ''],
+[24, 1668296, '<div class="tip"><strong>2013 Q4:</strong> 1,668,296 units</div>', 0, '']
+        ]);
+      
+        var chart = new google.visualization.ComboChart(document.getElementById('visualization'));
+
+        var options = {
+          colors: ['#de2d26', '#fcbba1'],
+          vAxis: {title: "Cups", maxValue: 2400000},
+          hAxis: { gridlines: { color: 'transparent' }, ticks: [{v:1, f:'2008'}, {v:5, f:'2009'}, {v:9, f:'2010'}, {v:13, f:'2011'}, {v:17, f:'2012'}, {v:21, f:'2013'}]},
+          seriesType: "line",
+          chartArea: {width: '100%', left: 175},
+          vAxis: {title: 'Dosage Units'},
+          curveType: 'function',
+          series: {1: {type: "bars"}},
+          legend: 'none',
+          tooltip: {isHtml: true}
+        };
+      
+      
+      var formatter = new google.visualization.NumberFormat(
+      {suffix: ' units', fractionDigits:0});
+      formatter.format(data, 1);
+        
+        chart.draw(data, options);
+        
+        function resizeHandler () {
+        chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+      
+      
+      }
+      
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="visualization" style="width: 100%; height: 300px;"></div>
+  </body>
+</html>
