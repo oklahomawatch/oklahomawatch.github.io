@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<style>
+html, body {
+padding:0px;
+margin:0px;
+}
+</style>
+
+  <meta charset="utf-8" />
+  <title>Painkiller prescriptions in Oklahoma</title>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Year');
+  data.addColumn('number', 'Hydrocodone');
+  data.addColumn('number', 'Oxycodone');
+  data.addRows([
+    ['2008', 127586599, 35191418],
+    ['2009', 140557327, 32523955],
+    ['2010', 154976828, 44006202],
+    ['2011', 180306030, 52094020],
+    ['2012', 189274506, 57123361],
+    ['2013', 192661508, 62293955]
+    ]);
+
+        var options = {
+          colors: ['#c0e9ff', '#0089d1' ],
+          vAxis: {title: 'Dosage Units'},
+          isStacked: true,
+          legend: 'none',
+          chartArea: {width:"100%", left: 175}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        
+        var formatter = new google.visualization.NumberFormat(
+      {suffix: ' units', fractionDigits:0});
+      formatter.format(data, 1);
+      formatter.format(data, 2);
+        
+        chart.draw(data, options);
+        
+        function resizeHandler () {
+        chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+        
+      }
+    </script>
+    
+    </head>
+<body>
+
+<div id="chart_div" style="width: 100%; height: 300px;"></div>
+
+</body>
+</html>
