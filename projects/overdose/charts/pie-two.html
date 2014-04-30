@@ -42,7 +42,7 @@ margin:0px;
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
        
        var formatter = new google.visualization.NumberFormat(
-      {suffix: ' checks', fractionDigits:0});
+      {fractionDigits:0});
       formatter.format(data, 1);
        
         chart.draw(data, options);
