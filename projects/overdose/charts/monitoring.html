@@ -20,16 +20,15 @@ margin:0px;
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-        ['', 'Prescriptions checked', 'Prescriptions not checked', { role: 'annotation' } ],
-        ['', 1522414, 8087808, '']
+        ['', 'PMP checks by prescribers', 'Prescriptions of controlled dangerous substances', { role: 'annotation' } ],
+        ['', 1522414, 9610222, '']
       ]);
 
       var options = {
-          isStacked: true,
 		  colors: ['#006d2c', '#bae4b3'],
 		  legend: 'none',
-		  hAxis: { textPosition: 'none', baselineColor: '#fff', viewWindowMode: 'maximized', gridlines: { color: '#fff'} },
-		  chartArea: {left:0, right:0, width:'100%', height:40}        
+		  hAxis: { textPosition: 'none', baselineColor: '#fff', gridlines: { color: '#fff'} },
+          chartArea: {width: '100%', left:0, right:0}
 		  };
 
         var chart = new google.visualization.BarChart(document.getElementById('barchart'));
@@ -59,7 +58,7 @@ margin:0px;
     
     <body>
     
-    <div id="barchart" style="width: 100%; height: 60px;"></div>
+    <div id="barchart" style="width: 100%;"></div>
     
     
     </body>
