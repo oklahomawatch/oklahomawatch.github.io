@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+<head>
+<title>Crime in Oklahoma</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script src="http://oklahomawatchdata.org/static/js/jquery.tablesorter.min.js"></script>
+
+<link rel="stylesheet" href="http://oklahomawatchdata.org/static/css/leaflet.css" />
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+
+
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+<![endif]-->
+ 
+<style>
+ 
+#map {
+    height: 500px;
+    width: 100%;
+    border-bottom:1px solid #ccc;
+    }
+
+#compareTable th {cursor:pointer; cursor:hand;}
+
+</style>
+
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="container">
+<div style="text-align:right; margin-top:10px;">
+<select id="citySelect" onchange="getCity()">
+    <option value="reset">--select--</option>
+</select>
+</div>
+
+<h1 id="cityName"></h1>
+<div class="row">
+<div class="col-md-6" id="test"></div>
+<div class="col-md-6" id="comparisonTable" style="display:none;"></div>
+</div>
+</div>
+
+<script src="http://oklahomawatchdata.org/static/js/leaflet.js"></script>
+<script src="http://oklahomawatchdata.org/static/js/crime-map/crime.js"></script>
+
+<script>
+
+function addCommas(nStr) {
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+}
+
+var dataDict = [
+{'name': "Violent crimes", 'slug': 'violent'},
+{'name': "Violent crime rate", 'slug': 'violent_rate'},
+{'name': "Property crimes", 'slug': 'property'},
+{'name': "Property crime rate", 'slug': 'property_rate'},
+{'name': "Murders", 'slug': 'murder'},
+{'name': "Murder rate", 'slug': 'murder_rate'},
+{'name': "Arson", 'slug': 'arson'},
+{'name': "Rape", 'slug': 'rape'},
+{'name': "Aggravated Assault", 'slug': 'agg_asslt'},
+{'name': "Burglary", 'slug': 'burglary'},
+{'name': "Larceny", 'slug': 'larceny'},
+{'name': "Motor vehicle theft", 'slug': 'mv_theft'},
+]
+
+    for (var i=0;i<cities.features.length;i++) {
+        var option = document.createElement("option");
+        option.value = cities.features[i].properties.city;
+        option.innerHTML = option.value;
+        document.getElementById("citySelect").appendChild(option);    
+    }
+    
+$.tablesorter.addParser({
+        id: 'money',
+        is: function (s) {
+            var sp = s.replace(/,/, '.');
+            return sp;
+        }, format: function (s) {
+            return $.tablesorter.formatFloat(s.replace(new RegExp(/[^\d\.]/g), ""));
+        }, type: 'numeric'
+        });
+    
+function getCity() {
+    $("#test").html('');
+    $('#comparisonTable').html('');
+    var thisCity = document.getElementById('citySelect').value;
+    for (var i=0;i<cities.features.length;i++)
+        if (thisCity == cities.features[i].properties.city) {
+        
+        $('#cityName').html(cities.features[i].properties.city);
+        
+        var legendFiller = '<ul><li><strong>Population:</strong> ' + addCommas(cities.features[i].properties.pop) + '</li><li><strong>Property crimes:</strong> ' + addCommas(cities.features[i].properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">compare</a>)</li><li><strong>Violent crimes:</strong> ' + addCommas(cities.features[i].properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">compare</a>)</li>' + '<li><strong>Property crime rate:</strong> ' + addCommas(cities.features[i].properties.property_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">compare</a>)</li>' + ' <li><strong>Violent crime rate:</strong> ' + addCommas(cities.features[i].properties.violent_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">compare</a>)</li>' + ' <li><strong>Murders:</strong> ' + addCommas(cities.features[i].properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">compare</a>)</li>' + ' <li><strong>Murder rate:</strong> ' + addCommas(cities.features[i].properties.murder_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">compare</a>)</li>' + ' <li><strong>Aggravated assaults:</strong> ' + addCommas(cities.features[i].properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">compare</a>)</li>' + ' <li><strong>Rapes:</strong> ' + addCommas(cities.features[i].properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">compare</a>)</li>' + '<li><strong>Arsons:</strong> ' + addCommas(cities.features[i].properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">compare</a>)</li>' + '<li><strong>Motor vehicle theft:</strong> ' + addCommas(cities.features[i].properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">compare</a>)</li>' + '<li><strong>Burglary:</strong> ' + (cities.features[i].properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">compare</a>)</li>' + '<li><strong>Larceny:</strong> ' + addCommas(cities.features[i].properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">compare</a>)</li>' + '<li><strong>Change in violent crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.viol_pct_change * 100).toFixed(2) + '%</li><li><strong>Change in property crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.prop_pct_change * 100).toFixed(2)+ '%</li></ul><small>Data from 2012 unless otherwise specified. Percentage changes have been omitted for cities that reported no crimes of that type for the earlier year being compared. (You can\'t calculate a percent change from zero.)</small>' ;
+        $("#test").html(legendFiller);
+        var lat = cities.features[i].geometry.coordinates[1]
+        var lng = cities.features[i].geometry.coordinates[0]
+        map.setView(new L.LatLng(lat,lng), 13)
+    $('.compare').click(function() {
+        var compareType = $(this).attr('id').toLowerCase().replace('compare','');
+        for(var i=0; i < dataDict.length; i++)
+            {
+        if(dataDict[i].slug == compareType)
+            {
+        var headerName = dataDict[i].name;
+            }
+            }        
+        var table_head = '<small><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></small><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
+        var table_body = '';
+        var activeTr = '';        
+        for (var i=0; i<cities.features.length; i++) {
+        if (cities.features[i].properties.city.toLowerCase() == $('#cityName').text().toLowerCase()) {activeTr = '<tr style="background:#D9EDF7" id="find' + cities.features[i].properties.city.toLowerCase().replace(" ","-") + '">'} else {activeTr = '<tr>'};
+        table_body += [
+            activeTr,
+            '<td>', 
+            cities.features[i].properties.city,
+            '</td><td style="text-align:right;">',
+            addCommas(cities.features[i].properties[compareType]),
+            '</td></tr>'].join('');   
+        }
+        
+        $('#comparisonTable').html(table_head + table_body + '</tbody></table><small><a href="javascript:void(0)" id="tableHide">Hide table</a></small>').fadeIn(200);
+                
+        $('#compareTable').tablesorter({sortList: [[1,1]],
+        headers: {
+			1: { sorter: 'money' }
+        }});
+        
+        var finder = "#find" + $('#cityName').text().toLowerCase().replace(" ","-")
+        
+        $('#scroller').click(function() {
+            $('html, body').animate({
+            scrollTop: $(finder).offset().top - 50
+            }, 1000);
+        });
+       
+        $('#tableHide').click(function() {
+            $('#comparisonTable').fadeOut(200);
+        });
+    });    
+        
+        }
+        else if (thisCity == "reset") {
+        map.setView(new L.LatLng(35.62604706595698, -98.2012939453125), 7)
+        $("#test").html('');
+        $('#compareTable').html('');
+        }
+    }
+
+var map = L.map('map').setView([35.62604706595698, -98.2012939453125], 7);
+
+L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+}).addTo(map);
+
+    function onEachFeature(feature, layer) {
+        var legendContent = '<ul><li><strong>Population:</strong> ' + addCommas(feature.properties.pop) + '</li><li><strong>Property crimes:</strong> ' + addCommas(feature.properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">compare</a>)</li><li><strong>Violent crimes:</strong> ' + addCommas(feature.properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">compare</a>)</li>' + '<li><strong>Property crime rate:</strong> ' + addCommas(feature.properties.property_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">compare</a>)</li>' + ' <li><strong>Violent crime rate:</strong> ' + addCommas(feature.properties.violent_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">compare</a>)</li>' + ' <li><strong>Murders:</strong> ' + addCommas(feature.properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">compare</a>)</li>' + ' <li><strong>Murder rate:</strong> ' + addCommas(feature.properties.murder_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">compare</a>)</li>' + ' <li><strong>Aggravated assaults:</strong> ' + addCommas(feature.properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">compare</a>)</li>' + ' <li><strong>Rapes:</strong> ' + addCommas(feature.properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">compare</a>)</li>' + '<li><strong>Arsons:</strong> ' + addCommas(feature.properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">compare</a>)</li>' + '<li><strong>Motor vehicle theft:</strong> ' + addCommas(feature.properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">compare</a>)</li>' + '<li><strong>Burglary:</strong> ' + addCommas(feature.properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">compare</a>)</li>' + '<li><strong>Larceny:</strong> ' + addCommas(feature.properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">compare</a>)</li>' + '<li><strong>Change in violent crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.viol_pct_change * 100).toFixed(2) + '%</li><li><strong>Change in property crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.prop_pct_change * 100).toFixed(2)+ '%</li></ul><small>Data from 2012 unless otherwise specified. Percentage changes have been omitted for cities that reported no crimes of that type for the earlier year being compared. (You can\'t calculate a percent change from zero.)</small>' ;            
+            function doIt() {
+            $('#cityName').html(feature.properties.city);
+            $('#test').html(legendContent);
+            $('#comparisonTable').html('');
+            $('#citySelect').val(feature.properties.city);
+            var lat = feature.geometry.coordinates[1];
+            var lng = feature.geometry.coordinates[0];
+            map.setView(new L.LatLng(lat,lng), 13);
+
+         $('.compare').click(function() {
+        var compareType = $(this).attr('id').toLowerCase().replace('compare','');
+        for(var i=0; i < dataDict.length; i++)
+            {
+        if(dataDict[i].slug == compareType)
+            {
+        var headerName = dataDict[i].name;
+            }
+            }        
+        var table_head = '<small><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></small><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
+        var table_body = '';
+        var activeTr = '';        
+        for (var i=0; i<cities.features.length; i++) {
+        if (cities.features[i].properties.city.toLowerCase() == $('#cityName').text().toLowerCase()) {activeTr = '<tr style="background:#D9EDF7" id="find' + cities.features[i].properties.city.toLowerCase().replace(" ","-") + '">'} else {activeTr = '<tr>'};
+        table_body += [
+            activeTr,
+            '<td>',           
+            cities.features[i].properties.city,
+            '</td><td style="text-align:right;">',
+            addCommas(cities.features[i].properties[compareType]),
+            '</td></tr>'].join('');   
+        }
+
+        $('#comparisonTable').html(table_head + table_body + '</tbody></table><small><a href="javascript:void(0)" id="tableHide">Hide table</a></small>').fadeIn(200);
+                
+        $('#compareTable').tablesorter({sortList: [[1,1]],
+        headers: {
+			1: { sorter: 'money' }
+        }});
+        
+        var finder = "#find" + $('#cityName').text().toLowerCase().replace(" ","-")
+        
+        $('#scroller').click(function() {
+            $('html, body').animate({
+            scrollTop: $(finder).offset().top - 50
+            }, 1000);
+        });
+        
+        $('#tableHide').click(function() {
+            $('#comparisonTable').fadeOut(200);
+        });
+    });
+   
+            };
+			
+            if (feature.properties && feature.properties.legendContent) {
+				legendContent += feature.properties.legendContent;
+			}
+            
+            layer.on({
+				click: doIt});
+			};
+
+    L.geoJson(cities, {
+			onEachFeature: onEachFeature,
+			pointToLayer: function (feature, latlng) {
+				return L.circleMarker(latlng, {
+					radius: 8,
+					fillColor: "#3587D4",
+					color: "#000",
+					weight: 1,
+					opacity: 1,
+					fillOpacity: 0.5
+				});
+			}
+		}).addTo(map);
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+</script>
+      
+                </body>
+</html>
