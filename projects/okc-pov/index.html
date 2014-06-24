@@ -87,6 +87,7 @@ z-index:999 !important;
 <i style="background:#3182bd"></i> 25.9-91.4%<br/>
 <i style="background:#08519c"></i> 91.4%+<br/><br/>
 
+<button onclick="clearMarkers()">Clear markers</button>
 </div>
 
     
@@ -99,12 +100,15 @@ z-index:999 !important;
 
 <script>
 
+var markers = new L.LayerGroup();
+
      $("#autocomplete").geocodify({
          onSelect: function (result) { 
          var lat = result.geometry.location.k;
          var lng = result.geometry.location.A;
          map.setView(new L.LatLng(lat,lng), 11);
-         L.marker([lat, lng]).addTo(map).bindPopup("<b>" + result.formatted_address + "</b>");         
+         var choice = L.marker([lat, lng]).addTo(markers);
+         choice.bindPopup("<b>" + result.formatted_address + "</b>");
          },
          viewportBias: new google.maps.LatLngBounds(
              new google.maps.LatLng(34.755153088189324,-98.48007202148438),
@@ -124,7 +128,7 @@ z-index:999 !important;
 var map = L.map('map').setView([35.48611327253736, -97.54520416259766], 9);
 var ggl = new L.Google('ROADMAP');
 map.addLayer(ggl);
-  
+map.addLayer(markers);  
 var col = '';
 
 		function getColor(d) {
@@ -178,6 +182,10 @@ var col = '';
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
+        
+   function clearMarkers() {
+    map.removeLayer(markers);    
+    }
 
                 </script>
 	</body>
