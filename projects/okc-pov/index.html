@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+<title>Race and poverty in Oklahoma</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="css/leaflet.css" />
+<link rel="stylesheet" href="css/jquery.geocodify.css" />
+
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+<![endif]-->
+ 
+<style>
+ 
+html, body {
+height:100%;
+width:100%;
+padding: 0;
+margin: 0;
+cursor:pointer;
+cursor:hand;
+}
+
+#map {
+    height: 100%;
+    width:100%;
+    }
+
+.info {
+padding: 10px;
+font: 14px/16px Arial, Helvetica, sans-serif;
+background: #fff;
+box-shadow: 0 0 15px rgba(0,0,0,0.2);
+border-radius: 5px;
+position:fixed;
+bottom:15px;
+left:15px;
+z-index:999 !important;
+		}
+
+		.info h3 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+.getter {
+position:fixed;
+top:15px;
+right:15px;
+z-index:999 !important;
+}        
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 10px;
+			opacity: 1.0;
+		}
+        
+
+</style>
+
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="getter">
+<input id="autocomplete" class="geocodify" placeholder="Enter an address" type="text"></input>
+</div>
+
+<div class="info legend">
+
+<h3>Poverty rate</h3>
+<i style="background:#c6dbef"></i> &lt;7.46%<br/>
+<i style="background:#9ecae1"></i> 7.46-14.5%<br/>
+<i style="background:#6baed6"></i> 14.5-25.9%<br/>
+<i style="background:#3182bd"></i> 25.9-91.4%<br/>
+<i style="background:#08519c"></i> 91.4%+<br/><br/>
+
+</div>
+
+    
+<script type="text/javascript" src="js/leaflet.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
+<script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+<script type="text/javascript" src="js/jquery.geocodify.js"></script>
+<script type="text/javascript" src="js/Google.js"></script>
+<script type="text/javascript" src="js/okc.js"></script>
+
+<script>
+
+     $("#autocomplete").geocodify({
+         onSelect: function (result) { 
+         var lat = result.geometry.location.k;
+         var lng = result.geometry.location.A;
+         map.setView(new L.LatLng(lat,lng), 11);
+         L.marker([lat, lng]).addTo(map).bindPopup("<b>" + result.formatted_address + "</b>");         
+         },
+         viewportBias: new google.maps.LatLngBounds(
+             new google.maps.LatLng(34.755153088189324,-98.48007202148438),
+             new google.maps.LatLng(35.872916,-97.016251)
+         ),         
+         prepSearchString: function(query) {
+             var pattr = /\sca\s|\soklahoma\s/gi;
+             var match = query.match(pattr);
+             if (!match) {
+                 return query + ' Oklahoma';
+             } else {
+                 return query;
+             }
+         }
+     });
+    
+var map = L.map('map').setView([35.48611327253736, -97.54520416259766], 9);
+var ggl = new L.Google('ROADMAP');
+map.addLayer(ggl);
+  
+var col = '';
+
+		function getColor(d) {
+			if (d <= 7.475) {col = '#c6dbef'}
+            else if (d > 7.475 && d <= 14.5) {col = '#9ecae1'}
+            else if (d > 14.5 && d <= 25.9) {col = '#6baed6'}
+            else if (d > 25.9 && d <= 91.4) {col = '#3182bd'}
+            else if (d > 91.4) {col = '#08519c'}
+            return col;
+		}
+        
+		function style(feature) {
+			return {
+				weight: 1,
+				opacity: 1,
+				color: '#fff',
+				fillOpacity: 0.8,
+				fillColor: getColor(feature.properties.poverty)
+			};
+		}
+
+		function highlightFeature(e) {
+			var layer = e.target;
+			layer.setStyle({
+				weight: 3,
+				color: '#fff',
+				fillOpacity: 1.0
+			});
+
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}   
+            
+		}
+
+		var geojson;
+
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+		}
+
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+			});
+            layer.bindPopup('<h3>Poverty rate: ' + feature.properties.poverty + '%</h3><hr/><strong>White:</strong> ' + feature.properties.white + '%<br/><strong>Black:</strong> ' + feature.properties.black + '%<br/><strong>Alaska Native:</strong> ' + feature.properties.alaska + '%<br/><strong>Asian:</strong> ' + feature.properties.asian + '%<br/><strong>Pacific Islander:</strong> ' + feature.properties.islander + '%<br/><strong>Other:</strong> ' + feature.properties.other + '%<br/><strong>Two or more races:</strong> ' + feature.properties.two + '%')
+		}
+
+		geojson = L.geoJson(okc, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+
+                </script>
+	</body>
+</html>
