@@ -81,11 +81,11 @@ z-index:999 !important;
 <div class="info legend">
 
 <h3>Poverty rate</h3>
-<i style="background:#c6dbef"></i> &lt;7.46%<br/>
-<i style="background:#9ecae1"></i> 7.46-14.5%<br/>
-<i style="background:#6baed6"></i> 14.5-25.9%<br/>
-<i style="background:#3182bd"></i> 25.9-91.4%<br/>
-<i style="background:#08519c"></i> 91.4%+<br/><br/>
+<i style="background:#c6dbef"></i> &lt;10%<br/>
+<i style="background:#9ecae1"></i> 10-20%<br/>
+<i style="background:#6baed6"></i> 20-30%<br/>
+<i style="background:#3182bd"></i> 30-40%<br/>
+<i style="background:#08519c"></i> 40%+<br/><br/>
 
 <button onclick="clearMarkers()">Clear markers</button>
 </div>
@@ -97,6 +97,7 @@ z-index:999 !important;
 <script type="text/javascript" src="js/jquery.geocodify.js"></script>
 <script type="text/javascript" src="js/Google.js"></script>
 <script type="text/javascript" src="js/okc.js"></script>
+<!--<script type="text/javascript" src="js/zips.js"></script>-->
 
 <script>
 
@@ -132,11 +133,11 @@ map.addLayer(markers);
 var col = '';
 
 		function getColor(d) {
-			if (d <= 7.475) {col = '#c6dbef'}
-            else if (d > 7.475 && d <= 14.5) {col = '#9ecae1'}
-            else if (d > 14.5 && d <= 25.9) {col = '#6baed6'}
-            else if (d > 25.9 && d <= 91.4) {col = '#3182bd'}
-            else if (d > 91.4) {col = '#08519c'}
+			if (d <= 10) {col = '#c6dbef'}
+            else if (d > 10 && d <= 20) {col = '#9ecae1'}
+            else if (d > 20 && d <= 30) {col = '#6baed6'}
+            else if (d > 30 && d <= 40) {col = '#3182bd'}
+            else if (d > 40) {col = '#08519c'}
             return col;
 		}
         
@@ -149,6 +150,18 @@ var col = '';
 				fillColor: getColor(feature.properties.poverty)
 			};
 		}
+        
+/*     
+     function zipstyle(feature) {
+			return {
+				weight: 3,
+				opacity: 1,
+				color: '#000',
+				fillOpacity: 0,
+				fillColor: 'transparent'
+			};
+		}
+*/
 
 		function highlightFeature(e) {
 			var layer = e.target;
@@ -165,7 +178,8 @@ var col = '';
 		}
 
 		var geojson;
-
+	//	var ziplayer;
+        
 		function resetHighlight(e) {
 			geojson.resetStyle(e.target);
 		}
@@ -175,13 +189,19 @@ var col = '';
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 			});
-            layer.bindPopup('<h3>Poverty rate: ' + feature.properties.poverty + '%</h3><hr/><strong>White:</strong> ' + feature.properties.white + '%<br/><strong>Black:</strong> ' + feature.properties.black + '%<br/><strong>Alaska Native:</strong> ' + feature.properties.alaska + '%<br/><strong>Asian:</strong> ' + feature.properties.asian + '%<br/><strong>Pacific Islander:</strong> ' + feature.properties.islander + '%<br/><strong>Other:</strong> ' + feature.properties.other + '%<br/><strong>Two or more races:</strong> ' + feature.properties.two + '%')
+            layer.bindPopup('<h3 style="text-align:center;">Tract No. ' + feature.properties.NAME + '<br/><small>Poverty rate: ' + feature.properties.poverty + '%</small></h3><hr/><strong>White:</strong> ' + feature.properties.white + '%<br/><strong>Black:</strong> ' + feature.properties.black + '%<br/><strong>Alaska Native:</strong> ' + feature.properties.alaska + '%<br/><strong>Asian:</strong> ' + feature.properties.asian + '%<br/><strong>Pacific Islander:</strong> ' + feature.properties.islander + '%<br/><strong>Other:</strong> ' + feature.properties.other + '%<br/><strong>Two or more races:</strong> ' + feature.properties.two + '%')
 		}
 
+/*
+        ziplayer = L.geoJson(zips, {
+			style: zipstyle
+		}).addTo(map);
+  */      
 		geojson = L.geoJson(okc, {
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
+       
         
    function clearMarkers() {
     map.removeLayer(markers);    
