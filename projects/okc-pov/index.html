@@ -75,7 +75,7 @@ z-index:999 !important;
 <div id="map"></div>
 
 <div class="getter">
-<input id="autocomplete" class="geocodify" placeholder="Enter an address" type="text"></input>
+<input id="autocomplete" class="geocodify" placeholder="Enter an address to drop marker" type="text"></input>
 </div>
 
 <div class="info legend">
@@ -100,6 +100,19 @@ z-index:999 !important;
 <!--<script type="text/javascript" src="js/zips.js"></script>-->
 
 <script>
+
+        function addCommas(nStr)
+        {
+        	nStr += '';
+        	x = nStr.split('.');
+        	x1 = x[0];
+        	x2 = x.length > 1 ? '.' + x[1] : '';
+        	var rgx = /(\d+)(\d{3})/;
+        	while (rgx.test(x1)) {
+        		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        	}
+        	return x1 + x2;
+        }
 
 var markers = new L.LayerGroup();
 
@@ -189,7 +202,7 @@ var col = '';
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 			});
-            layer.bindPopup('<h3 style="text-align:center;">Tract No. ' + feature.properties.NAME + '<br/><small>Poverty rate: ' + feature.properties.poverty + '%</small></h3><hr/><strong>White:</strong> ' + feature.properties.white + '%<br/><strong>Black:</strong> ' + feature.properties.black + '%<br/><strong>Alaska Native:</strong> ' + feature.properties.alaska + '%<br/><strong>Asian:</strong> ' + feature.properties.asian + '%<br/><strong>Pacific Islander:</strong> ' + feature.properties.islander + '%<br/><strong>Other:</strong> ' + feature.properties.other + '%<br/><strong>Two or more races:</strong> ' + feature.properties.two + '%')
+            layer.bindPopup('<h3 style="text-align:center;">Tract No. ' + feature.properties.NAME + '<br/><small>Population: ' + addCommas(feature.properties.pop) + '<br/>Poverty rate: ' + feature.properties.poverty + '%</small></h3><hr/><strong>White:</strong> ' + feature.properties.white + '%<br/><strong>Black:</strong> ' + feature.properties.black + '%<br/><strong>Hispanic:</strong> ' + feature.properties.hispanic + '%<br/><strong>Asian:</strong> ' + feature.properties.asian + '%<br/><strong>Native American:</strong> ' + feature.properties.native + '%<br/><strong>Hawaiian:</strong> ' + feature.properties.hawaiian + '%<br/><strong>Other:</strong> ' + feature.properties.other + '%<br/><strong>Two or more races:</strong> ' + feature.properties.two + '%')
 		}
 
 /*
