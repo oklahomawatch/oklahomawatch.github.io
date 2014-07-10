@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel='stylesheet' id='dashicons-css'  href='http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/largo/css/style.css?ver=3.9.1' type='text/css' />
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 <title>Disaster aid flowchart</title>
 
 <style>
 html, body {margin:0; padding:0; height:100%; width:100%;}
 .sub {color:#ccc; text-transform:uppercase; font-size:1.2em;}
-.backgrounder {height:16px; width:24px; float:left; margin-right:5px; vertical-align:-5px;}
-#legend {font-size:small; font-family:Arial; text-transform:uppercase; font-weight:bold;}
+#legend {font-family:Arial; text-transform:uppercase; font-weight:bold;}
 #legend span {cursor:pointer; cursor: hand;}
 #legend span:hover {text-decoration:underline;}
+.entry {margin-bottom:4em;}
 </style>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -22,28 +23,42 @@ html, body {margin:0; padding:0; height:100%; width:100%;}
     <script type="text/javascript">
       
       var col = ['#ca0020', '#f4a582', '#92c5de', '#0571b0']
-      
-      google.load("visualization", "1", {packages:["corechart"]});
+	  
+	  google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Source', 'Amount'],
-          ['Oklahoma', 20000000],
-          ['FEMA', 60700000],
-          ['SBA', 49800000],
-          ['HUD', 145900000],
-        ]);
-
+        ['', 'FEMA', 'SBA', 'HUD', 'Oklahoma', { role: 'annotation' } ],
+        ['', 60700000,  49800000, 145900000, 20000000, '']
+      ]);
         var options = {
-            legend:{position: 'none'},
-            chartArea: {left:10, top:10},
-            backgroundColor: 'transparent',
-            colors: col,
-            pieSliceText: 'none'
-        };
+          isStacked: true,
+		  colors: col,
+		  legend: 'none',
+		  hAxis: { textPosition: 'none', baselineColor: '#fff', viewWindowMode: 'maximized', gridlines: { color: '#fff'} },
+		  chartArea: {left:0, right:0, width:'100%'}      
+		  };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.BarChart(document.getElementById('barchart'));
+        
+		var formatter = new google.visualization.NumberFormat(
+        {pattern:'$#,###', fractionDigits:0, });
+        formatter.format(data, 1);
+		formatter.format(data, 2);
+		formatter.format(data, 3);		
+		formatter.format(data, 4);
+		chart.draw(data, options);		
+
+     function resizeHandler () {
         chart.draw(data, options);
+    }
+    if (window.addEventListener) {
+        window.addEventListener('resize', resizeHandler, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent('onresize', resizeHandler);
+    }
+        
       }
       
     </script>
@@ -52,98 +67,28 @@ html, body {margin:0; padding:0; height:100%; width:100%;}
 
 <body>
 
-<h1>Total state and federal aid: $256.5 million</h1>
+<h1>
+<div class="sub" style="font-size:0.38em; margin-bottom:-3.5em;">Total aid on June 2, 2014</div><br/>
+Up to $276.4 million
+</h1>
 
-<p>As with other natural disasters, public money flowed to victims of the Moore tornado in four main streams.</p>
+<p>As with other natural disasters, federal and state money flowed to victims of the Moore tornado from four main sources:</p>
 
-<div id="wrapper" style="text-align:center; margin:o auto 0 auto">
 <div id="legend">
-<span style="color:#0571b0">HUD</span> &nbsp;&nbsp;&nbsp; <span style="color:#ca0020">Oklahoma</span> &nbsp;&nbsp;&nbsp; <span style="color:#f4a582">FEMA</span> &nbsp;&nbsp;&nbsp; <span style="color:#92c5de">SBA</span> 
+<span style="color:#ca0020" id="femalink">Federal Emergency Management Agency</span><br/><span style="color:#f4a582" id="sbalink">U.S. Small Business Administration</span><br/><span style="color:#92c5de" id="hudlink">U.S. Department of Housing and Urban Development</span><br/><span style="color:#0571b0" id="oklink">State of Oklahoma</span> 
 </div>
 
-<!--<a href="#state_ok">the State of Oklahoma</a>, <a href="#fema">the Federal Emergency Management Agency</a>, <a href="#sba">the U.S. Small Business Administration</a> and <a href="#hud">the U.S. Department of Housing and Urban Development</a>.--></p>
+<div id="barchart" style="width: 100%; height: 80px;"></div>
 
-<div id="piechart" style="width: 300px; height: 300px;"></div>
-</div>
-
-<!--
-<div style="text-align:center; margin:2em auto 2em auto;">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="300" height="300" viewBox="0 0 400 400">
-   <defs>
-    <marker id="lineEnd"
-            viewBox="0 0 10 10" 
-            refX="1" refY="5"
-            markerWidth="10" 
-            markerHeight="7"
-            orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10 z"/>
-    </marker>
-              
-</defs>
-      <line x1="70" y1="70"
-        x2="150" y2="150"
-        stroke-width="4"
-        stroke="black"
-        transform="rotate(45 150 150)"
-        marker-end="url(#lineEnd)"/>
-      
-      <line x1="100" y1="100"
-        x2="180" y2="180"
-        stroke-width="4"
-        stroke="black"
-        transform="rotate(225 180 220)"
-        marker-end="url(#lineEnd)"/>
-      
-     <line x1="120" y1="120"
-        x2="200" y2="200"
-        stroke-width="4"
-        stroke="black"
-        transform="rotate(135 200 200 )"
-        marker-end="url(#lineEnd)"/>
-      
-     <line x1="0" y1="0"
-        x2="130" y2="130"
-        stroke-width="4"
-        stroke="black"
-        transform="rotate(-45 200 200 )"
-        marker-end="url(#lineEnd)"/>
-      
-      <circle cx="150" cy="200" r="10"/>
-
-      <a xlink:href="#state_ok">
-      <text x="105" y="20" fill="#ccc" font-family="Arial" id="oklink">OKLAHOMA</text>
-      </a>
-      
-      <a xlink:href="#sba">
-      <text x="135" y="385" fill="#ccc" font-family="Arial" id="sbalink">SBA</text>
-      </a>
-      
-      <a xlink:href="#fema">
-      <text x="0" y="225" fill="#ccc" font-family="Arial" id="femalink">FEMA</text>
-      </a>
-      
-      <a xlink:href="#hud">
-      <text x="280" y="225" fill="#ccc" font-family="Arial" id="hudlink">HUD</text>
-      </a>      
-    </svg>
-</div>
--->
-    
-<h4 id="state_ok">Oklahoma</h4>
-<p>Oklahoma Emergency Management returned $25 million to the state's rainy day fund, leaving $20 million available for disaster assistance. Of that:</p>
-<ul>
-<li><strong>$8.2 million</strong> was used to pay the state's share of <a href="#pub_ass">FEMA's public and individual assistance</a></li>
-<li><strong>$11.8 million</strong> will be spent on other disaster relief projects</li>
-</ul>
-
-<h4 id="fema">FEMA</h4>
+<div class="entry" style="margin-top:4em;">    
+<h4 id="fema">FEMA: $60.7 million</h4>
 <p>The Federal Emergency Management Agency's money stream divides three ways:</p>
 <h4 class="sub" id="pub_ass"><a href="http://www.fema.gov/public-assistance-local-state-tribal-and-non-profit" target="_blank">Public Assistance Grants</a>: $41.7 million</h4>
 <ul>
 
-<li><strong>109 people</strong> applied for assistance under this program</li>
-<li><strong>538</strong> were awarded money</li>
-<li><strong>32</strong> have been approved and are still being paid</li>
+<li><strong>109 applicants</strong> requested assistance on 693 projects</li>
+<li><strong>538</strong> were awarded grants</li>
+<li><strong>32</strong> were approved and the award is pending</li>
 <li><strong>93</strong> are waiting to hear if they're eligible</li>
 <li><strong>30</strong> were ruled ineligible</li>
 </ul>
@@ -152,11 +97,39 @@ html, body {margin:0; padding:0; height:100%; width:100%;}
 <p>Of <strong>15,382</strong> who registered for this program, 3,663, or <strong>24 percent</strong>, were found eligible.</p>
 
 <h4 class="sub" id="hazard"><a href="http://www.fema.gov/hazard-mitigation-grant-program" target="_blank">Hazard Mitigation Grants</a>: $3.9 million</h4>
-<p>Of that total, <strong>$409,702</strong> went to Oklahoma Emergency Management to offset administration costs. Twenty-one projects in 14 counties were awarded grants.</p>
+<p>Of the total, <strong>$409,702</strong> went to Oklahoma Emergency Management to offset administrative costs. Twenty-one projects in 14 counties were awarded grants.</p>
+</div>
 
-<h4 id="sba">U.S. Small Business Administration</h4>
+<div class="entry">
+<h4 id="sba">U.S. Small Business Administration: $49.8 million</h4>
+<p>The SBA approved <strong>929 loans</strong> &mdash; 877 to homeowners and 52 to businesses &mdash; to recipients in 53 cities. 
+</div>
 
-<h4 id="hud">U.S. Department of Housing and Urban Development</h4>
+<div class="entry">
+<h4 id="hud">U.S. Department of Housing and Urban Development: Up to $145.9 million</h4>
+
+<p>Oklahoma City, Moore and the State of Oklahoma received Community Block Development Grants in two rounds:</p>
+<strong>First Round</strong>
+<ul>
+<li>State: $10.6 million</li>
+<li>Moore: $26.3 million</li>
+</ul>
+
+<strong>Second Round</strong>
+<ul>
+<li>Oklahoma City: up to $83.1 million for disasters 2011-2013</li>
+<li>Moore: $25.9 million</li>
+</ul>
+</div>
+
+<div class="entry">
+<h4 id="state_ok">State of Oklahoma: $20 million</h4>
+<p>Oklahoma Emergency Management returned $25 million to the state's rainy day fund, leaving <strong>$20 million</strong> available for disaster assistance. Of that:</p>
+<ul>
+<li><strong>$8.2 million</strong> was used to pay the state's share of <a href="#pub_ass">FEMA's public and individual assistance</a></li>
+<li><strong>$11.8 million</strong> will be spent on other disaster relief projects</li>
+</ul>
+</div>
 
 <script>
 
