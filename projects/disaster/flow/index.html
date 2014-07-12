@@ -74,7 +74,7 @@ Up to $276.4 million
 <p>Federal and state disaster assistance can be provided through <a href="http://www.fema.gov/media-library-data/1383602360163-dd3ea1b82309e9efd884f2fe04ceb12f/Recovery%20Resource%20Guide%20for%20Oklahoma.pdf" target="_blank">numerous agencies and channels</a>. In the case of Disaster 4117, three federal agencies plus the State of Oklahoma are delivering relief dollars to governments, utility cooperatives, businesses, individuals and other groups, using several programs:</p>
 
 <div id="legend">
-<span style="color:#ca0020"><a href="http://www.fema.gov/disaster/4117" target="_blank">Federal Emergency Management Agency</a></span><br/><span style="color:#f4a582"><a href="http://www.sba.gov/offices/disaster/dfocw/declaration/633691" target="_blank">U.S. Small Business Administration</a></span><br/><span style="color:#92c5de"><a href="http://portal.hud.gov/hudportal/HUD?src=/program_offices/comm_planning/communitydevelopment/programs/drsi" target="_blank">U.S. Department of Housing and Urban Development</a></span><br/><span style="color:#0571b0"><a href="http://www.ok.gov/oem/" target="_blank">State of Oklahoma</a></span> 
+<span style="color:#ca0020" id="femalink">Federal Emergency Management Agency</span><br/><span style="color:#f4a582" id="sbalink">U.S. Small Business Administration</span><br/><span style="color:#92c5de" id="hudlink">U.S. Department of Housing and Urban Development</span><br/><span style="color:#0571b0" id="oklink">State of Oklahoma</span> 
 </div>
 
 <div id="barchart" style="width: 100%; height: 80px;"></div>
@@ -129,6 +129,26 @@ Up to $276.4 million
 <li><strong>$11.8 million</strong> will be spent on other disaster relief projects</li>
 </ul>
 </div>
+
+<script>
+
+$('#oklink').click(function() {
+    $("html, body").animate({ scrollTop: $('#state_ok').offset().top }, 1000);
+});
+
+$('#sbalink').click(function() {
+    $("html, body").animate({ scrollTop: $('#sba').offset().top }, 1000);
+});
+
+$('#hudlink').click(function() {
+    $("html, body").animate({ scrollTop: $('#hud').offset().top }, 1000);
+});
+
+$('#femalink').click(function() {
+    $("html, body").animate({ scrollTop: $('#fema').offset().top }, 1000);
+});
+
+</script>
 
 </body>
 </html>
