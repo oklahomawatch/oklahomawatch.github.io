@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<link rel='stylesheet' id='dashicons-css'  href='http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/largo/css/style.css?ver=3.9.1' type='text/css' />
+
+<title>Hazard mitigation</title>
+
+<style>
+
+th {cursor:hand; cursor:pointer}
+th:hover {background:#e2f5ff}
+html, body {padding:0; margin:0;}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="main" style="width:100%;">
+
+<h2>Risk-Reduction Aid by County</h2>
+<p>The 21 hazard-mitigation grants approved by FEMA through early June as a result of Disaster 4117 will be spent in 14 counties. All but four counties are outside the declared disaster area. The program is designed to reduce long-term risk to people and property.</p>
+
+<p>The grants total $4,704,008, of which $3,528,006 is federal money. The Oklahoma Department of Emergency Management receives $409,702, bringing the federal share to $3,937,708.</p>
+
+<div class="table-responsive">
+<table id="dis" class="table tablesorter">
+  <thead>
+    <tr>
+      <th class="County-cell">County</th>
+      <th class="approved-projects-cell">Approved Projects</th>
+      <th class="project-cost-cell">Project Cost</th>
+      <th class="federal-share-cell">Federal Share</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="firstRow">
+      <td class="County-cell">Comanche</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$122,948</td>
+      <td class="federal-share-cell">$92,211</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Craig*</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$9,159</td>
+      <td class="federal-share-cell">$6,869</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Custer</td>
+      <td class="approved-projects-cell">3</td>
+      <td class="project-cost-cell">$92,680</td>
+      <td class="federal-share-cell">$69,510</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Kay</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$21,340</td>
+      <td class="federal-share-cell">$16,005</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Le Flore*</td>
+      <td class="approved-projects-cell">2</td>
+      <td class="project-cost-cell">$93,054</td>
+      <td class="federal-share-cell">$69,791</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Marshall</td>
+      <td class="approved-projects-cell">2</td>
+      <td class="project-cost-cell">$79,664</td>
+      <td class="federal-share-cell">$59,748</td>
+    </tr>
+    <tr>
+      <td class="County-cell">McClain</td>
+      <td class="approved-projects-cell">2</td>
+      <td class="project-cost-cell">$507,548</td>
+      <td class="federal-share-cell">$380,661</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Oklahoma*</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$1,344,002</td>
+      <td class="federal-share-cell">$1,008,002</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Ottawa*</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$76,705</td>
+      <td class="federal-share-cell">$57,529</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Payne</td>
+      <td class="approved-projects-cell">3</td>
+      <td class="project-cost-cell">$2,058,016</td>
+      <td class="federal-share-cell">$1,543,512</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Pontotoc</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$57,208</td>
+      <td class="federal-share-cell">$42,906</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Sequoyah</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$113,596</td>
+      <td class="federal-share-cell">$85,197</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Tulsa</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$62,604</td>
+      <td class="federal-share-cell">$46,953</td>
+    </tr>
+    <tr>
+      <td class="County-cell">Washington</td>
+      <td class="approved-projects-cell">1</td>
+      <td class="project-cost-cell">$65,484</td>
+      <td class="federal-share-cell">$49,113</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>* Part of the declared Disaster 4117 area.</p>
+<p class="small">Source: Federal Emergency Management Agency</p>
+
+</div>
+
+</div>
+
+<!--scripts-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.oklahomawatchdata.org/static/js/jquery.tablesorter.min.js"></script>
+<script>
+
+  $.tablesorter.addParser({
+        id: "money",
+        is: function (s) {
+            var sp = s.replace(/,/, '.');
+            var test = (/([£$€] ?\d+\.?\d*|\d+\.?\d* ?)/.test(sp)); //check currency with symbol
+            return test;
+        }, format: function (s) {
+            return $.tablesorter.formatFloat(s.replace(new RegExp(/[^\d\.]/g), ""));
+        }, type: "numeric"
+    });
+
+	
+    $('#dis').tablesorter({
+         sortList: [[3,1]],
+        headers: {
+			2: { sorter: 'money' },
+			3: { sorter: 'money' }
+        }
+    });
+
+    /*
+ jQuery Plugin: Table Filter v0.2.3
+
+ LICENSE: http://hail2u.mit-license.org/2009
+*/
+(function(a){a.fn.addTableFilter=function(d){var b=a.extend({},a.fn.addTableFilter.defaults,d),c,e;this.is("table")&&(this.attr("id")||this.attr({id:"t-"+Math.floor(99999999*Math.random())}),c=this.attr("id"),d=c+"-filtering",e=a("<label/>").attr({"for":d}).append(b.labelText),b=a('<input type="text" class="form-control" style="width:75%; margin:0;" placeholder="Search grants ..." />').attr({id:d,size:b.size}).on("click",function(){a(this).keyup()}),a("<p/>").addClass("formTableFilter").append(e).append(b).insertBefore(this),a("#"+d).delayBind("keyup",function(b){var d=a(this).val().toLowerCase().split(" ");
+a("#"+c+" tbody tr").each(function(){var b=a(this).html().toLowerCase().replace(/<.+?>/g,"").replace(/\s+/g," "),c=0;a.each(d,function(){if(0>b.indexOf(this))return c=1,!1});c?a(this).hide():a(this).show()})},300));return this};a.fn.addTableFilter.defaults={labelText:"",size:32};a.fn.delayBind=function(d,b,c,e){a.isFunction(b)&&(e=c,c=b,b=void 0);var g=this,f=null;return this.bind(d,b,function(b){clearTimeout(f);f=setTimeout(function(){c.apply(g,[a.extend({},b)])},e)})}})(jQuery);
+
+$("table").addTableFilter();
+
+    </script>
+
+</body>
+</html>
