@@ -5,15 +5,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel='stylesheet' id='largo-stylesheet-css'  href='http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/largo/css/style.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='carousel-styles-css'  href='http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/largo/css/carousel.css?ver=3.9.1' type='text/css' media='screen' />
+<link rel='stylesheet' id='largo-child-styles-css'  href='http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/oklahomawatch/style.css?ver=3.9.1' type='text/css' media='all' />
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script src="http://oklahomawatchdata.org/static/js/jquery.tablesorter.min.js"></script>
 
 <link rel="stylesheet" href="http://oklahomawatchdata.org/static/css/leaflet.css" />
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    
 
 
 <!--[if lte IE 8]>
@@ -22,33 +23,98 @@
  
 <style>
  
+html, body { margin-bottom:2em; }
+ 
 #map {
     height: 500px;
-    width: 100%;
-    border-bottom:1px solid #ccc;
+    margin:0;
+    width:100%;
+    float:left;
+    border:1px solid #F2F9FE;
     }
 
 #compareTable th {cursor:pointer; cursor:hand;}
+
+@media (max-width: 770px) {
+    #comparisonTable {width:100%; float:none; margin:auto;}
+    #wrapper {width:100%; float:none; margin:auto;}
+    #map {display:none;}
+    }
+        
+    #sidebar {height:460px; width:250px; background: #fff; overflow-y: auto; margin:0; right:0; position:absolute; background: #F2F9FE; z-index:999; padding:20px; border:1px solid #F2F9FE;}
+    
+    .killit {font-size:150%; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; text-align:center; color:#78c3f0; margin:0.5em;}
 
 </style>
 
 </head>
 <body>
 
+<div class="global-nav-bg">
+	<div class="global-nav">
+		<nav id="top-nav" class="span12">
+        	<span class="visuallyhidden">
+        		<a href="#main" title="Skip to content">Skip to content</a>
+        	</span>
+
+        	<ul id="menu-global-navigation" class="menu"><li id="menu-item-598" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-598"><a href="http://oklahomawatch.org/about/">About Us</a></li>
+<li id="menu-item-722" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-722"><a href="http://oklahomawatch.org/contact-us/">Contact</a></li>
+<li id="menu-item-723" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-723"><a href="http://oklahomawatch.org/use-of-oklahoma-watch-content/">Use Our Content</a></li>
+</ul>        	<div class="nav-right">
+
+        			        		<ul id="header-social" class="social-icons visible-desktop">
+						<li><a href="http://feeds.feedburner.com/okwatch" title="Link to RSS Feed"><i class="icon-rss"></i></a></li><li><a href="https://www.facebook.com/OklahomaWatch" title="Link to Facebook Profile"><i class="icon-facebook"></i></a></li><li><a href="http://twitter.com/OklahomaWatch" title="Link to Twitter Page"><i class="icon-twitter"></i></a></li><li><a href="http://www.youtube.com/oklahomawatch" title="Link to YouTube Page"><i class="icon-youtube"></i></a></li>					</ul>
+				
+        		<div class="donate-btn"><a href="http://oklahomawatch.org/support/"><i class="icon-heart"></i>Donate Now</a></div> 
+				<div id="header-search">
+
+					
+					<form class="form-search" role="search" method="get" action="http://oklahomawatch.org/">
+						<div class="input-append">
+							<input type="text" placeholder="Search" class="input-medium appendedInputButton search-query" value="" name="s"><button type="submit" class="search-submit btn">GO</button>
+						</div>
+					</form>
+
+									</div>
+
+			<div class="org-logo">
+        			<a href="http://investigativenewsnetwork.org/" target="_blank"><img src="http://oklahomawatch.wpengine.netdna-cdn.com/wp-content/themes/largo/img/inn-logo-80-55.jpg" height="55" alt="INN logo"></a>
+				</div>
+				
+        	</div>
+        </nav>
+    </div> <!-- /.global-nav -->
+</div>
+
+<div class="container" style="margin:2em;">
+<h2 style="text-align:center;">Oklahoma crime stats</h2>
+
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas consequat risus non fringilla elementum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras iaculis fringilla felis, sit amet condimentum orci placerat sed. Sed vestibulum posuere justo vel elementum.
+</p>
+
+<p class="small">
+Source: <a href="http://www.fbi.gov/about-us/cjis/ucr" target="_blank">FBI</a>. Data from 2012 unless otherwise specified. Percentage changes have been omitted for cities that reported no crimes of that type for the earlier year being compared. Read important caveats about interpreting this data <a href="http://www.fbi.gov/about-us/cjis/ucr/word" target="_blank">here</a>.
+</p>
+</div>
+
 <div id="map"></div>
 
-<div class="container">
-<div style="text-align:right; margin-top:10px;">
-<select id="citySelect" onchange="getCity()">
+<div id="sidebar">
+<div style="text-align:center;">
+<select id="citySelect" onchange="getCity()" style="margin: auto;">
     <option value="reset">--select--</option>
 </select>
 </div>
 
-<h1 id="cityName"></h1>
-<div class="row">
-<div class="col-md-6" id="test"></div>
-<div class="col-md-6" id="comparisonTable" style="display:none;"></div>
+<h5 class="killit"><span id="cityName" style="display:none;"></span> <span id='year' style='display:none;'><small>(2012)</small></span></h5>
+<div id="test"></div>
+
 </div>
+
+<div class="row" style="clear:both; width:100%; height:1em;"></div>
+<div id="comparisonTable" style="margin:2em;"></div>
+
 </div>
 
 <script src="http://oklahomawatchdata.org/static/js/leaflet.js"></script>
@@ -70,11 +136,11 @@ function addCommas(nStr) {
 
 var dataDict = [
 {'name': "Violent crimes", 'slug': 'violent'},
-{'name': "Violent crime rate", 'slug': 'violent_rate'},
+{'name': "Violent crime rate (per 1,000 people)", 'slug': 'violent_rate'},
 {'name': "Property crimes", 'slug': 'property'},
-{'name': "Property crime rate", 'slug': 'property_rate'},
+{'name': "Property crime rate (per 1,000 people)", 'slug': 'property_rate'},
 {'name': "Murders", 'slug': 'murder'},
-{'name': "Murder rate", 'slug': 'murder_rate'},
+{'name': "Murder rate (per 1,000 people)", 'slug': 'murder_rate'},
 {'name': "Arson", 'slug': 'arson'},
 {'name': "Rape", 'slug': 'rape'},
 {'name': "Aggravated Assault", 'slug': 'agg_asslt'},
@@ -109,8 +175,9 @@ function getCity() {
         
         $('#cityName').html(cities.features[i].properties.city);
         
-        var legendFiller = '<ul><li><strong>Population:</strong> ' + addCommas(cities.features[i].properties.pop) + '</li><li><strong>Property crimes:</strong> ' + addCommas(cities.features[i].properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">compare</a>)</li><li><strong>Violent crimes:</strong> ' + addCommas(cities.features[i].properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">compare</a>)</li>' + '<li><strong>Property crime rate:</strong> ' + addCommas(cities.features[i].properties.property_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">compare</a>)</li>' + ' <li><strong>Violent crime rate:</strong> ' + addCommas(cities.features[i].properties.violent_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">compare</a>)</li>' + ' <li><strong>Murders:</strong> ' + addCommas(cities.features[i].properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">compare</a>)</li>' + ' <li><strong>Murder rate:</strong> ' + addCommas(cities.features[i].properties.murder_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">compare</a>)</li>' + ' <li><strong>Aggravated assaults:</strong> ' + addCommas(cities.features[i].properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">compare</a>)</li>' + ' <li><strong>Rapes:</strong> ' + addCommas(cities.features[i].properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">compare</a>)</li>' + '<li><strong>Arsons:</strong> ' + addCommas(cities.features[i].properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">compare</a>)</li>' + '<li><strong>Motor vehicle theft:</strong> ' + addCommas(cities.features[i].properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">compare</a>)</li>' + '<li><strong>Burglary:</strong> ' + (cities.features[i].properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">compare</a>)</li>' + '<li><strong>Larceny:</strong> ' + addCommas(cities.features[i].properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">compare</a>)</li>' + '<li><strong>Change in violent crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.viol_pct_change * 100).toFixed(2) + '%</li><li><strong>Change in property crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.prop_pct_change * 100).toFixed(2)+ '%</li></ul><small>Data from 2012 unless otherwise specified. Percentage changes have been omitted for cities that reported no crimes of that type for the earlier year being compared. (You can\'t calculate a percent change from zero.)</small>' ;
+        var legendFiller = '<table class="table table-condensed"><tr><td><strong>Population:</strong> ' + addCommas(cities.features[i].properties.pop) + '</td></tr><tr><td><strong>Change in violent crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.viol_pct_change * 100).toFixed(2) + '%</td></tr><tr><td><strong>Change in property crime rate from ' + cities.features[i].properties.compare_year + '-2012:</strong> ' + (cities.features[i].properties.prop_pct_change * 100).toFixed(2)+ '%</td></tr><tr><td><strong>Violent crimes:</strong> ' + addCommas(cities.features[i].properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">Compare</a>)</td></tr><tr><td><strong>Violent crime rate (per 1,000 people):</strong> ' + addCommas(cities.features[i].properties.violent_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">Compare</a>)</td></tr><tr><td><strong>Property crimes:</strong> ' + addCommas(cities.features[i].properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">Compare</a>)</td></tr><tr><td><strong>Property crime rate (per 1,000 people):</strong> ' + addCommas(cities.features[i].properties.property_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">Compare</a>)</td></tr><tr><td><strong>Murders:</strong> ' + addCommas(cities.features[i].properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">Compare</a>)</td></tr><tr><td><strong>Murder rate (per 1,000 people):</strong> ' + addCommas(cities.features[i].properties.murder_rate) + ' per 1,000 people (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">Compare</a>)</td></tr><tr><td><strong>Aggravated assaults:</strong> ' + addCommas(cities.features[i].properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">Compare</a>)</td></tr><tr><td><strong>Rapes:</strong> ' + addCommas(cities.features[i].properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">Compare</a>)</td></tr><tr><td><strong>Arsons:</strong> ' + addCommas(cities.features[i].properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">Compare</a>)</td></tr><tr><td><strong>Motor vehicle theft:</strong> ' + addCommas(cities.features[i].properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">Compare</a>)</td></tr><tr><td><strong>Burglary:</strong> ' + (cities.features[i].properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">Compare</a>)</td></tr><tr><td><strong>Larceny:</strong> ' + addCommas(cities.features[i].properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">Compare</a>)</td></tr></table>' ;
         $("#test").html(legendFiller);
+        $('#year').show();
         var lat = cities.features[i].geometry.coordinates[1]
         var lng = cities.features[i].geometry.coordinates[0]
         map.setView(new L.LatLng(lat,lng), 13)
@@ -123,7 +190,7 @@ function getCity() {
         var headerName = dataDict[i].name;
             }
             }        
-        var table_head = '<small><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></small><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
+        var table_head = '<h5><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></h5><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
         var table_body = '';
         var activeTr = '';        
         for (var i=0; i<cities.features.length; i++) {
@@ -138,11 +205,15 @@ function getCity() {
         }
         
         $('#comparisonTable').html(table_head + table_body + '</tbody></table><small><a href="javascript:void(0)" id="tableHide">Hide table</a></small>').fadeIn(200);
-                
+        
         $('#compareTable').tablesorter({sortList: [[1,1]],
         headers: {
 			1: { sorter: 'money' }
         }});
+        
+        $('html, body').animate({
+            scrollTop: $('#scroller').offset().top - 50
+            }, 1000);
         
         var finder = "#find" + $('#cityName').text().toLowerCase().replace(" ","-")
         
@@ -173,10 +244,11 @@ L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 }).addTo(map);
 
     function onEachFeature(feature, layer) {
-        var legendContent = '<ul><li><strong>Population:</strong> ' + addCommas(feature.properties.pop) + '</li><li><strong>Property crimes:</strong> ' + addCommas(feature.properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">compare</a>)</li><li><strong>Violent crimes:</strong> ' + addCommas(feature.properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">compare</a>)</li>' + '<li><strong>Property crime rate:</strong> ' + addCommas(feature.properties.property_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">compare</a>)</li>' + ' <li><strong>Violent crime rate:</strong> ' + addCommas(feature.properties.violent_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">compare</a>)</li>' + ' <li><strong>Murders:</strong> ' + addCommas(feature.properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">compare</a>)</li>' + ' <li><strong>Murder rate:</strong> ' + addCommas(feature.properties.murder_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">compare</a>)</li>' + ' <li><strong>Aggravated assaults:</strong> ' + addCommas(feature.properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">compare</a>)</li>' + ' <li><strong>Rapes:</strong> ' + addCommas(feature.properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">compare</a>)</li>' + '<li><strong>Arsons:</strong> ' + addCommas(feature.properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">compare</a>)</li>' + '<li><strong>Motor vehicle theft:</strong> ' + addCommas(feature.properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">compare</a>)</li>' + '<li><strong>Burglary:</strong> ' + addCommas(feature.properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">compare</a>)</li>' + '<li><strong>Larceny:</strong> ' + addCommas(feature.properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">compare</a>)</li>' + '<li><strong>Change in violent crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.viol_pct_change * 100).toFixed(2) + '%</li><li><strong>Change in property crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.prop_pct_change * 100).toFixed(2)+ '%</li></ul><small>Data from 2012 unless otherwise specified. Percentage changes have been omitted for cities that reported no crimes of that type for the earlier year being compared. (You can\'t calculate a percent change from zero.)</small>' ;            
+        var legendContent = '<table class="table table-condensed"><tr><td><strong>Population:</strong> ' + addCommas(feature.properties.pop) + '</td></tr><tr><td><strong>Change in violent crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.viol_pct_change * 100).toFixed(2) + '%</td></tr><tr><td><strong>Change in property crime rate from ' + feature.properties.compare_year + '-2012:</strong> ' + (feature.properties.prop_pct_change * 100).toFixed(2)+ '%</td></tr><tr><td><strong>Violent crimes:</strong> ' + addCommas(feature.properties.violent) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent">Compare</a>)</td></tr><tr><td><strong>Violent crime rate (per 1,000 people):</strong> ' + addCommas(feature.properties.violent_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareViolent_Rate">Compare</a>)</td></tr><tr><td><strong>Property crimes:</strong> ' + addCommas(feature.properties.property) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty">Compare</a>)</td></tr><tr><td><strong>Property crime rate (per 1,000 people):</strong> ' + addCommas(feature.properties.property_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareProperty_Rate">Compare</a>)</td></tr><tr><td><strong>Murders:</strong> ' + addCommas(feature.properties.murder) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder">Compare</a>)</td></tr><tr><td><strong>Murder rate (per 1,000 people):</strong> ' + addCommas(feature.properties.murder_rate) + ' (<a href="javascript:void(0)" class="compare" id="compareMurder_Rate">Compare</a>)</td></tr><tr><td><strong>Aggravated assaults:</strong> ' + addCommas(feature.properties.agg_asslt) + ' (<a href="javascript:void(0)" class="compare" id="compareAgg_Asslt">Compare</a>)</td></tr><tr><td><strong>Rapes:</strong> ' + addCommas(feature.properties.rape) + ' (<a href="javascript:void(0)" class="compare" id="compareRape">Compare</a>)</td></tr><tr><td><strong>Arsons:</strong> ' + addCommas(feature.properties.arson) + ' (<a href="javascript:void(0)" class="compare" id="compareArson">Compare</a>)</td></tr><tr><td><strong>Motor vehicle theft:</strong> ' + addCommas(feature.properties.mv_theft) + ' (<a href="javascript:void(0)" class="compare" id="compareMv_Theft">Compare</a>)</td></tr><tr><td><strong>Burglary:</strong> ' + addCommas(feature.properties.burglary) + ' (<a href="javascript:void(0)" class="compare" id="compareBurglary">Compare</a>)</td></tr><tr><td><strong>Larceny:</strong> ' + addCommas(feature.properties.larceny) + ' (<a href="javascript:void(0)" class="compare" id="compareLarceny">Compare</a>)</td></tr></table>' ;            
             function doIt() {
             $('#cityName').html(feature.properties.city);
             $('#test').html(legendContent);
+            $('#year').show();
             $('#comparisonTable').html('');
             $('#citySelect').val(feature.properties.city);
             var lat = feature.geometry.coordinates[1];
@@ -192,7 +264,7 @@ L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         var headerName = dataDict[i].name;
             }
             }        
-        var table_head = '<small><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></small><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
+        var table_head = '<h5><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></h5><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
         var table_body = '';
         var activeTr = '';        
         for (var i=0; i<cities.features.length; i++) {
@@ -212,6 +284,10 @@ L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         headers: {
 			1: { sorter: 'money' }
         }});
+
+ $('html, body').animate({
+            scrollTop: $('#scroller').offset().top - 50
+            }, 1000);
         
         var finder = "#find" + $('#cityName').text().toLowerCase().replace(" ","-")
         
@@ -253,6 +329,12 @@ L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 		function zoomToFeature(e) {
 			map.fitBounds(e.target.getBounds());
 		}
+        
+        $(document).ready(function() {
+            var offset = $(window).width() - 290;
+            $('#map').width(offset);
+        });
+        
 </script>
       
                 </body>
