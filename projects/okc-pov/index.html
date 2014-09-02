@@ -118,16 +118,12 @@ var markers = new L.LayerGroup();
 
      $("#autocomplete").geocodify({
          onSelect: function (result) { 
-         var lat = result.geometry.location.k;
-         var lng = result.geometry.location.A;
+         var lat = result.geometry.location.lat();
+         var lng = result.geometry.location.lng();
          map.setView(new L.LatLng(lat,lng), 11);
          var choice = L.marker([lat, lng]).addTo(markers);
          choice.bindPopup("<b>" + result.formatted_address + "</b>");
-         },
-         viewportBias: new google.maps.LatLngBounds(
-             new google.maps.LatLng(34.755153088189324,-98.48007202148438),
-             new google.maps.LatLng(35.872916,-97.016251)
-         ),         
+         },     
          prepSearchString: function(query) {
              var pattr = /\sca\s|\soklahoma\s/gi;
              var match = query.match(pattr);
