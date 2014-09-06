@@ -279,7 +279,7 @@ function getCity() {
         var headerName = dataDict[i].name;
             }
             }        
-        var table_head = '<h5><a href="javascript:void(0)" id="scroller">Click to scroll to ' + $('#cityName').text() + '</a></h5><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
+        var table_head = '<input type="button" value="Scroll to ' + $('#cityName').text() + '" id="scroller" class="btn btn-primary btn-block button" style="width:100%; margin:1em auto 1em auto"></button><table class="table table-condensed tablesorter" id="compareTable" style="width:100%;"><thead><tr><th>City</th><th style="text-align:right;">' + headerName + '</th></tr></thead><tbody>'
         var table_body = '';
         var activeTr = '';        
         for (var i=0; i<cities.features.length; i++) {
