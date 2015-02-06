@@ -150,12 +150,15 @@ var col = '';
 var redtracts = ["1026", "1027", "1028", "1029", "1030", "1013", "1014", "1015", "1004", "1005", "1061", "1051", "1052.01", "1052.02", "1048", "1049", "1050", "1039", "1041", "1043", "1044", "1045", "1046", "1047", "1072.18", "1058", "1069.09", "1069.10", "1069.12", "1069.13", "1069.14", "1069.15"];
         
         function style(feature) {
-            var outline = '';
+            var outline = ''
+                , q = '';
             if ( $.inArray( feature.properties.NAME, redtracts ) > -1 )
-                { outline = "#d73027" }
-            else { outline = "#fff" };        
+                { outline = "#d73027";
+                  q = 2}
+            else { outline = "#fff";
+                   q = 1};        
 			return {
-				weight: 1,
+				weight: q,
 				opacity: 1,
 				color: outline,
 				fillOpacity: 0.8,
