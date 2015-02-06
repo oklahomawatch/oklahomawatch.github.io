@@ -4,8 +4,6 @@
 <title>Race and poverty in Oklahoma</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     
 <link rel="stylesheet" href="css/leaflet.css" />
 <link rel="stylesheet" href="css/jquery.geocodify.css" />
@@ -90,14 +88,13 @@ z-index:999 !important;
 <button onclick="clearMarkers()">Clear markers</button>
 </div>
 
-    
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/leaflet.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
 <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
 <script type="text/javascript" src="js/jquery.geocodify.js"></script>
 <script type="text/javascript" src="js/Google.js"></script>
 <script type="text/javascript" src="js/okc.js"></script>
-<!--<script type="text/javascript" src="js/zips.js"></script>-->
 
 <script>
 
@@ -150,11 +147,17 @@ var col = '';
             return col;
 		}
         
-		function style(feature) {
+var redtracts = ["1026", "1027", "1028", "1029", "1030", "1013", "1014", "1015", "1004", "1005", "1061", "1051", "1052.01", "1052.02", "1048", "1049", "1050", "1039", "1041", "1043", "1044", "1045", "1046", "1047", "1072.18", "1058", "1069.09", "1069.10", "1069.12", "1069.13", "1069.14", "1069.15"];
+        
+        function style(feature) {
+            var outline = '';
+            if ( $.inArray( feature.properties.NAME, redtracts ) > -1 )
+                { outline = "#d73027" }
+            else { outline = "#fff" };        
 			return {
 				weight: 1,
 				opacity: 1,
-				color: '#fff',
+				color: outline,
 				fillOpacity: 0.8,
 				fillColor: getColor(feature.properties.poverty)
 			};
