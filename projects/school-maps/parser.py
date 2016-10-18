@@ -2,7 +2,7 @@ import csv
 import json
 
 
-files = ['calculus.txt', 'chemistry.txt', 'physics.txt', 'algebra.txt']
+files = ['physics.txt', 'calculus.txt']  # 'algebra.txt', 'chemistry.txt']
 
 school_dict = {}
 
